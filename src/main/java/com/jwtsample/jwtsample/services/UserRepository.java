@@ -8,15 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.jwtsample.jwtsample.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
-    Optional<User> findByEmail(String email);
+    Optional<User> findByChannelId(int channelId);
 
-    Optional<User> findByUsernameOrEmail(String username, String email);
+    Optional<User> findByAccessId(String accessId);
 
     List<User> findByIdIn(List<Long> userIds);
 
-    Optional<User> findByUsername(String username);
 
-    Boolean existsByUsername(String username);
+    Boolean existsByAccessId(String accessId);
 
-    Boolean existsByEmail(String email);
 }

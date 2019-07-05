@@ -28,6 +28,7 @@ import com.jwtsample.jwtsample.exceptions.AppException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
+import java.util.HashSet;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -53,7 +54,7 @@ public class AuthController {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsernameOrEmail(),
+                        loginRequest.getAccessId(),
                         loginRequest.getPassword()
                 )
         );
@@ -66,21 +67,18 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if(userRepository.existsByAccessId(signUpRequest.getAccessId())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
-                    HttpStatus.BAD_REQUEST);
-        }
 
         // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword());
+        User user = new User(signUpRequest.getAccessId(), signUpRequest.getChannelId(),
+                signUpRequest.getPassword(), new HashSet<>());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new AppException("User Role not set."));
@@ -91,7 +89,7 @@ public class AuthController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/users/{username}")
-                .buildAndExpand(result.getUsername()).toUri();
+                .buildAndExpand(result.getAccessId()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }

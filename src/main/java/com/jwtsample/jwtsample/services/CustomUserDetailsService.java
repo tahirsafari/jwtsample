@@ -17,11 +17,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String usernameOrEmail) {
+	public UserDetails loadUserByUsername(String accessId) {
         // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        User user = userRepository.findByAccessId(accessId)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail)
+                        new UsernameNotFoundException("User not found with accessId : " + accessId)
         );
 
         return UserPrincipal.create(user);

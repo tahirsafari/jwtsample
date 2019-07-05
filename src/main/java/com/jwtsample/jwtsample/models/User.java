@@ -1,8 +1,6 @@
 package com.jwtsample.jwtsample.models;
 
-import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -11,30 +9,21 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "username"
-        }),
-        @UniqueConstraint(columnNames = {
-            "email"
+            "accessId"
         })
+//        ,
+//        @UniqueConstraint(columnNames = {
+//            "email"
+//        })
 })
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 40)
-    private String name;
+    private String accessId;
 
-    @NotBlank
-    @Size(max = 15)
-    private String username;
-
-    @NaturalId
-    @NotBlank
-    @Size(max = 40)
-    @Email
-    private String email;
+    private int channelId;
 
     @NotBlank
     @Size(max = 100)
@@ -45,51 +34,63 @@ public class User{
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+    
+    private boolean enabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean accountNonExpired;
 
     public User() {
 
     }
 
-    public User(String name, String username, String email, String password) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+   
 
-    public Long getId() {
-        return id;
-    }
+    public User(String accessId, int channelId,
+			@NotBlank @Size(max = 100) String password, Set<Role> roles) {
+		this.accessId = accessId;
+		this.channelId = channelId;
+		this.password = password;
+		this.roles = roles;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getEmail() {
-        return email;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public String getPassword() {
+
+	public String getAccessId() {
+		return accessId;
+	}
+
+
+
+	public void setAccessId(String accessId) {
+		this.accessId = accessId;
+	}
+
+
+
+	public int getChannelId() {
+		return channelId;
+	}
+
+
+
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
+
+	public String getPassword() {
         return password;
     }
 
@@ -104,4 +105,54 @@ public class User{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+
+
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+
+
+	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
+
+
+
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+
+
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+    
+    
 }

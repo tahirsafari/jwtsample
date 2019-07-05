@@ -1,6 +1,6 @@
 package com.jwtsample.jwtsample;
 
-import com.jwtsample.jwtsample.services.CustomUserDetailsService;
+//import com.jwtsample.jwtsample.services.CustomUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.jwtsample.jwtsample.services.CustomUserDetailsService;
 
 
 @Configuration
@@ -29,9 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
+    
+    public SecurityConfig() {
+        super();
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -41,6 +51,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+		//auth.authenticationProvider(authProvider);
+
+//        auth.inMemoryAuthentication()
+//            .withUser("admin")
+//            .password("admin1")
+//            //{noop} makes sure that the password encoder doesn't do anything
+//            .roles("USER") // Role of the user
+//            .and()
+//            .withUser("user")
+//            .password("admin1")
+//            .credentialsExpired(false)
+//            .accountExpired(false)
+//            .accountLocked(false)
+//            .roles("ADMIN");
 	}
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -54,6 +78,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+//    @SuppressWarnings("deprecation")
+//    @Bean
+//    public static NoOpPasswordEncoder passwordEncoder() {
+//    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

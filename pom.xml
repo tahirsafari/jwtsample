@@ -60,7 +60,27 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.0</version>
 		</dependency>
-		
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+	    <!-- local jars -->
+	    <dependency>
+			<groupId>com.cbs</groupId>
+			<artifactId>cbs</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.safaricommonlib</groupId>
+			<artifactId>safaricommonlib</artifactId>
+			<version>1.0</version>
+		</dependency>		
 	</dependencies>
 
 	<build>

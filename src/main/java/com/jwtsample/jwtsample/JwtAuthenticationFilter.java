@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
@@ -12,11 +15,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.jwtsample.jwtsample.services.CustomUserDetailsService;
 
+//import com.jwtsample.jwtsample.services.CustomUserDetailsService;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -41,6 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     and create the UserDetails object by parsing those claims from the JWT.
                     That would avoid the following database hit. It's completely up to you.
                  */
+                final List<GrantedAuthority> grantedAuths = new ArrayList<>();
+                grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+                
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

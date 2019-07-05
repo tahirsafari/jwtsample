@@ -12,24 +12,22 @@ import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
     private Long id;
-
-    private String name;
-
-    private String username;
-
-    @JsonIgnore
-    private String email;
+    private String accessId;
+    private int channelId;
+    private boolean enabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean accountNonExpired;
 
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String accessId, int channelId, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.name = name;
-        this.username = username;
-        this.email = email;
+        this.accessId = accessId;
+        this.channelId = channelId;
         this.password = password;
         this.authorities = authorities;
     }
@@ -41,9 +39,8 @@ public class UserPrincipal implements UserDetails {
 
         return new UserPrincipal(
                 user.getId(),
-                user.getName(),
-                user.getUsername(),
-                user.getEmail(),
+                user.getAccessId(),
+                user.getChannelId(),
                 user.getPassword(),
                 authorities
         );
@@ -53,20 +50,37 @@ public class UserPrincipal implements UserDetails {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public String getEmail() {
-        return email;
-    }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    public String getAccessId() {
+		return accessId;
+	}
 
-    @Override
+	public void setAccessId(String accessId) {
+		this.accessId = accessId;
+	}
+
+	public int getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+	@Override
     public String getPassword() {
         return password;
     }
@@ -109,4 +123,9 @@ public class UserPrincipal implements UserDetails {
 
         return Objects.hash(id);
     }
+
+	@Override
+	public String getUsername() {
+		return this.accessId;
+	}
 }
