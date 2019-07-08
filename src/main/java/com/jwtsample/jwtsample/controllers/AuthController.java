@@ -52,6 +52,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+    	System.out.println("Authenticate user "+loginRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getAccessId(),
@@ -77,7 +78,7 @@ public class AuthController {
         User user = new User(signUpRequest.getAccessId(), signUpRequest.getChannelId(),
                 signUpRequest.getPassword(), new HashSet<>());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+       user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPassword(user.getPassword());
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)

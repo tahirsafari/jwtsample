@@ -44,7 +44,7 @@ public class JwtTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-
+        System.out.println("claims "+claims);
         return Long.parseLong("1");
     }
 

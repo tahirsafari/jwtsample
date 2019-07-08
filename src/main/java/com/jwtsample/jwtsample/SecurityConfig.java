@@ -23,15 +23,15 @@ import com.jwtsample.jwtsample.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
+//@EnableGlobalMethodSecurity(
+//        securedEnabled = true,
+//        jsr250Enabled = true,
+//        prePostEnabled = true
+//)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+//    @Autowired
+//    private CustomUserDetailsService customUserDetailsService;
     
     @Autowired
     private CustomAuthenticationProvider authProvider;
@@ -50,8 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-		//auth.authenticationProvider(authProvider);
+		//auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+		System.out.println("Authenticate configure ");
+		auth.authenticationProvider(authProvider);
 
 //        auth.inMemoryAuthentication()
 //            .withUser("admin")
@@ -81,8 +82,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    @SuppressWarnings("deprecation")
 //    @Bean
 //    public static NoOpPasswordEncoder passwordEncoder() {
-//    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+//    	return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
 //    }
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
