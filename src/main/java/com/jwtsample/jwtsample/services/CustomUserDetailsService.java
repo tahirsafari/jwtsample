@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(String accessId) {
         // Let people login with either username or email
-        User user = userRepository.findByAccessId(accessId)
+        User user = userRepository.findByUserId(0L)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with accessId : " + accessId)
         );

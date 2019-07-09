@@ -8,13 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.jwtsample.jwtsample.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
-    Optional<User> findByChannelId(int channelId);
+    //Optional<User> findByChannelId(int channelId);
+    //Optional<User> findByUserId(int userId);
+    Optional<User> findByUserId(Long accessId);
 
-    Optional<User> findByAccessId(String accessId);
-
-    List<User> findByIdIn(List<Long> userIds);
+    //List<User> findByIdIn(List<Long> userIds);
 
 
-    Boolean existsByAccessId(String accessId);
+    //Boolean existsByAccessId(String accessId);
 
 }

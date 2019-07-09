@@ -29,4 +29,18 @@ public class AuthenticationService {
 		return user;
 
 	}
+	
+	public _UserAuthInfo getUserInfoByUserId(Long userId) throws Exception {
+		this.ca = new CbsAgent(jdbcTemplate.getDataSource().getConnection());
+    	this.chInterface = new  CbsAuthInterface(this.ca);
+//		String accessId = "1000008";
+    	String password = "APIXTOIWEHSDLKOWERH";
+		int channelId = 0;
+		int authType = CbsConstants.AUTHTYPE_USERID_ACCESSKEY;
+	
+		_UserAuthInfo  user = chInterface.authenticate(userId.toString(), password, channelId, authType);
+		System.out.println("result "+user.toString());
+		return user;
+
+	}
 }
