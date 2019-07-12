@@ -23,20 +23,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.userdetails.User;
 import com.jwtsample.jwtsample.exceptions.ResourceNotFoundException;
-import com.jwtsample.jwtsample.models.Role;
-import com.jwtsample.jwtsample.models.RoleName;
+//import com.jwtsample.jwtsample.models.Role;
+//import com.jwtsample.jwtsample.models.RoleName;
 import com.jwtsample.jwtsample.models.UserAuthInfo;
 import com.jwtsample.jwtsample.services.AuthenticationService;
 import com.jwtsample.jwtsample.services.UserPrincipal;
 //import com.jwtsample.jwtsample.services.UserPrincipal;
-import com.jwtsample.jwtsample.services.UserRepository;
+//import com.jwtsample.jwtsample.services.UserRepository;
 import com.safari.pg.cbs.def._UserAuthInfo;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider,UserDetailsService{
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
 	@Autowired
 	AuthenticationService authenticationService;
     public CustomAuthenticationProvider() {
@@ -47,10 +47,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider,User
 	public Authentication authenticate(Authentication authentication) {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
+        CustomAuthenticationToken auth = (CustomAuthenticationToken) authentication;
+        int channelId = Integer.parseInt(auth.getChannelId());
+
 	     System.out.println("password "+password);
 	     _UserAuthInfo userInfo;
 		try {
-			userInfo = authenticationService.authenticate(name, password);
+			userInfo = authenticationService.authenticate(name, password, channelId);
 					//letsAuthenticate(name, password);
 //	        if ( userInfo != null) {
 //	        	 System.out.println("authenticated ");
@@ -71,8 +74,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider,User
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             final UserDetails principal = new UserAuthInfo(userInfo, password, grantedAuths);
-            final Authentication auth = new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
-            return auth;
+            final Authentication auth2 = new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
+            return auth2;
 		} catch (Exception e) {
 			throw new BadCredentialsException("Authentication failed");
 		}
@@ -112,12 +115,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider,User
 	@Transactional
 	public UserDetails loadUserByUsername(String accessId) {
         // Let people login with either username or email
-		com.jwtsample.jwtsample.models.User user = userRepository.findByUserId(0L)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with accessId : " + accessId)
-        );
-
-        return UserPrincipal.create(user);
+//		com.jwtsample.jwtsample.models.User user = userRepository.findByUserId(0L)
+//                .orElseThrow(() ->
+//                        new UsernameNotFoundException("User not found with accessId : " + accessId)
+//        );
+//
+//        return UserPrincipal.create(user);
+		return null;
 	}
 
 

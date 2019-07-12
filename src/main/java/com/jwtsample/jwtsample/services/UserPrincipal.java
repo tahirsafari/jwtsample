@@ -50,20 +50,20 @@ public class UserPrincipal implements UserDetails {
         );
     }
     
-    public static UserPrincipal create(com.jwtsample.jwtsample.models.User user) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-    	//user.getRoles().stream().map(role ->
-//                new SimpleGrantedAuthority(role.getName().name())
-//        ).collect(Collectors.toList());
-
-        return new UserPrincipal(
-                user.getUserId(),
-                user.getUserTitle(),
-//                user.getChannelId(),
-//                user.getPassword(),
-                authorities
-        );
-    }
+//    public static UserPrincipal create(com.jwtsample.jwtsample.models.User user) {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//    	//user.getRoles().stream().map(role ->
+////                new SimpleGrantedAuthority(role.getName().name())
+////        ).collect(Collectors.toList());
+//
+//        return new UserPrincipal(
+//                user.getUserId(),
+//                user.getUserTitle(),
+////                user.getChannelId(),
+////                user.getPassword(),
+//                authorities
+//        );
+//    }
 
 //    public Long getId() {
 //        return id;

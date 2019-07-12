@@ -15,20 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jwtsample.jwtsample.ApiResponse;
+import com.jwtsample.jwtsample.CustomAuthenticationToken;
+//import com.jwtsample.jwtsample.CustomUsernamePasswordAuthenticationFilter;
 import com.jwtsample.jwtsample.JwtAuthenticationResponse;
 import com.jwtsample.jwtsample.JwtTokenProvider;
 import com.jwtsample.jwtsample.LoginRequest;
 import com.jwtsample.jwtsample.SignUpRequest;
-import com.jwtsample.jwtsample.models.Role;
-import com.jwtsample.jwtsample.models.RoleName;
-import com.jwtsample.jwtsample.models.User;
-import com.jwtsample.jwtsample.services.RoleRepository;
-import com.jwtsample.jwtsample.services.UserRepository;
+//import com.jwtsample.jwtsample.models.Role;
+//import com.jwtsample.jwtsample.models.RoleName;
+//import com.jwtsample.jwtsample.models.User;
+//import com.jwtsample.jwtsample.services.RoleRepository;
+//import com.jwtsample.jwtsample.services.UserRepository;
 import com.jwtsample.jwtsample.exceptions.AppException;
 import javax.validation.Valid;
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashSet;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,11 +36,11 @@ public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Autowired
+//    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -54,9 +53,10 @@ public class AuthController {
 
     	System.out.println("Authenticate user "+loginRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
+                new CustomAuthenticationToken(
                         loginRequest.getAccessId(),
-                        loginRequest.getPassword()
+                        loginRequest.getPassword(),
+                        loginRequest.getChannelId()
                 )
         );
 
@@ -67,31 +67,31 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, authentication.getPrincipal()));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-//        if(userRepository.existsByAccessId(signUpRequest.getAccessId())) {
-//            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
-//                    HttpStatus.BAD_REQUEST);
-//        }
-
-
-        // Creating user's account
-        User user = new User();
-
-//       user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setPassword(user.getPassword());
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new AppException("User Role not set."));
-
-       // user.setRoles(Collections.singleton(userRole));
-
-        User result = userRepository.save(user);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/users/{username}")
-                .buildAndExpand(result.getUserId()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+////        if(userRepository.existsByAccessId(signUpRequest.getAccessId())) {
+////            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+////                    HttpStatus.BAD_REQUEST);
+////        }
+//
+//
+//        // Creating user's account
+//        User user = new User();
+//
+////       user.setPassword(passwordEncoder.encode(user.getPassword()));
+////        user.setPassword(user.getPassword());
+//
+//        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+//                .orElseThrow(() -> new AppException("User Role not set."));
+//
+//       // user.setRoles(Collections.singleton(userRole));
+//
+//        User result = userRepository.save(user);
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentContextPath().path("/users/{username}")
+//                .buildAndExpand(result.getUserId()).toUri();
+//
+//        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+//    }
 }

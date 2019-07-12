@@ -16,12 +16,12 @@ public class AuthenticationService {
 	CbsAgent ca;
 	CbsAuthInterface chInterface;
 	
-	public _UserAuthInfo authenticate(String accessId, String password) throws Exception {
+	public _UserAuthInfo authenticate(String accessId, String password, int channelId) throws Exception {
 		this.ca = new CbsAgent(jdbcTemplate.getDataSource().getConnection());
     	this.chInterface = new  CbsAuthInterface(this.ca);
 //		String accessId = "1000008";
 //		String password = "APIXTOIWEHSDLKOWERH";
-		int channelId = 0;
+		//int channelId = 0;
 		int authType = CbsConstants.AUTHTYPE_USERID_ACCESSKEY;
 	
 		_UserAuthInfo  user = chInterface.authenticate(accessId, password, channelId, authType);

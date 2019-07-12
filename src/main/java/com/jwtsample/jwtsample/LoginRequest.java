@@ -8,6 +8,9 @@ public class LoginRequest {
 
     @NotBlank
     private String password;
+    
+    @NotBlank
+    private String channelId;
 
 
 
@@ -26,4 +29,14 @@ public class LoginRequest {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public String getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
+    
+    
 }
