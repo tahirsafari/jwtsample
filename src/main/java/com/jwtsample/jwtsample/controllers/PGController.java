@@ -1,6 +1,8 @@
 package com.jwtsample.jwtsample.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,8 @@ public class PGController {
 	@Value("${pghost.url}")
 	private String pgHostUrl;
 	
-	
+	//@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/request")
 	public String hitPGAPI(@RequestBody String request) {
 	    RestTemplate restTemplate = new RestTemplate();

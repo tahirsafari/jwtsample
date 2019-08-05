@@ -54,23 +54,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider,User
 	     _UserAuthInfo userInfo;
 		try {
 			userInfo = authenticationService.authenticate(name, password, channelId);
-					//letsAuthenticate(name, password);
-//	        if ( userInfo != null) {
-//	        	 System.out.println("authenticated ");
-	          //final Set<Role> grantedAuths = new HashSet<>();
-	          //final List<GrantedAuthority> grantedAuths = new ArrayList<>();
-//	          grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-//	          grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//	            grantedAuths.add(new Role(RoleName.ROLE_USER));
-//	            System.out.println("password2 "+password);
-//	           final UserDetails principal = (UserDetails) new com.jwtsample.jwtsample.models.User(name,1, password, grantedAuths);
-//	           System.out.println("principal "+principal); 
-//	           final Authentication auth = new UsernamePasswordAuthenticationToken(principal, password, new ArrayList<GrantedAuthority>(Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))));
-//	           System.out.println("auth "+auth); 
-//	            return auth;
-//	        } else {
-//	        	throw new BadCredentialsException("Authentication failed");
-//	        }
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             final UserDetails principal = new UserAuthInfo(userInfo, password, grantedAuths);

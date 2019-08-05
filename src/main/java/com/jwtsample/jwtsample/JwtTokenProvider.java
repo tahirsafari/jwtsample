@@ -50,7 +50,7 @@ public class JwtTokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String authToken) throws Exception {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
@@ -58,6 +58,7 @@ public class JwtTokenProvider {
             logger.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
             logger.error("Invalid JWT token");
+            throw new Exception("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             logger.error("Expired JWT token");
         } catch (UnsupportedJwtException ex) {

@@ -5,6 +5,7 @@ package com.jwtsample.jwtsample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,6 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //        jsr250Enabled = true,
 //        prePostEnabled = true
 //)
+@Profile("!test")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    @Autowired
@@ -60,19 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 		System.out.println("Authenticate configure ");
 		auth.authenticationProvider(authProvider());
-
-//        auth.inMemoryAuthentication()
-//            .withUser("admin")
-//            .password("admin1")
-//            //{noop} makes sure that the password encoder doesn't do anything
-//            .roles("USER") // Role of the user
-//            .and()
-//            .withUser("user")
-//            .password("admin1")
-//            .credentialsExpired(false)
-//            .accountExpired(false)
-//            .accountLocked(false)
-//            .roles("ADMIN");
 	}
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

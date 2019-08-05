@@ -37,6 +37,8 @@ public class UserPrincipal implements UserDetails {
 
     public static UserPrincipal createUserAuthInfo(_UserAuthInfo  user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
+        final List<GrantedAuthority> grantedAuths = new ArrayList<>();
+        grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
     	//user.getRoles().stream().map(role ->
 //                new SimpleGrantedAuthority(role.getName().name())
 //        ).collect(Collectors.toList());
@@ -46,7 +48,7 @@ public class UserPrincipal implements UserDetails {
                 user.getLoginId(),
 //                user.getChannelId(),
 //                user.getPassword(),
-                authorities
+                grantedAuths
         );
     }
     
